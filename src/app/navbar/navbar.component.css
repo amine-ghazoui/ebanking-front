@@ -1,0 +1,9 @@
+.btn-custom-blue {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .btn-custom-blue:hover,
+  .btn-custom-blue:focus {
+    background-color: #0056b3;
+  }
