@@ -25,7 +25,7 @@ export class CustomersComponent implements OnInit{
     this.searchFormGroup = this.fb.group({
       keyword : this.fb.control(""), 
     });
-    this.getCustomers();
+    this.handleSearchCustomers();
   }
   
   getCustomers(){
@@ -38,7 +38,13 @@ export class CustomersComponent implements OnInit{
   }
 
   handleSearchCustomers(){
-
+    let kw = this.searchFormGroup?.value.keyword;
+    this.customers = this.customerService.serachCustomers(kw).pipe(
+      catchError( err => {
+        this.errorMessage = err.message;
+        return throwError(err);
+      })
+    );
   }
 
 
