@@ -1,11 +1,11 @@
 <div class="container py-5">
-  <ng-container *ngIf="customers |async as listCustomers; else failure">
-
+  <!-- Gestion des données avec le pipe async -->
+  <ng-container *ngIf="customers | async as listCustomers; else failureOrLoading">
     <div *ngIf="errorMessage" class="text-danger">
-      <!-- pour afficher "un objet" ou format Json dans la parti HTML on utilise pipe | avec json -->
+      {{ errorMessage }}
     </div>
+
     <div class="card shadow-lg border-0 rounded-4">
-      
       <!-- En-tête bleu très clair -->
       <div class="card-header" style="background-color: #e9f5ff;">
         <h3 class="mb-0 text-primary">Customer List</h3>
@@ -14,6 +14,17 @@
       <!-- Corps avec tableau -->
       <div class="card-body">
         <div class="table-responsive">
+          <div *ngIf="searchFormGroup">
+            {{this.searchFormGroup.value | json}}
+            <form [formGroup]="searchFormGroup" (ngSubmit)="handleSearchCustomers()">
+              <div class="input-group mb-3">
+                <label for="kw" class="input-group-text">Keyword :</label>
+                <input type="text" id="kw" formControlName="keyword" class="form-control">
+                <button class="btn btn-info">Search</button>
+              </div>
+            </form>
+          </div>
+          
           <table class="table table-hover align-middle">
             <thead class="table-primary">
               <tr>
@@ -23,7 +34,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let customer of customers | async">
+              <tr *ngFor="let customer of listCustomers">
                 <td>{{ customer.id }}</td>
                 <td>{{ customer.name }}</td>
                 <td>{{ customer.email }}</td>
@@ -33,24 +44,19 @@
         </div>
       </div>
     </div>
-
   </ng-container>
 
-  <ng-template #failure >
-    <div class="text-danger">
-      {{errorMessage}}
-    </div>
-  </ng-template>
-
+  <!-- Gestion des erreurs et du chargement -->
   <ng-template #failureOrLoading>
     <ng-container *ngIf="errorMessage; else loading">
       <div class="text-danger">
-        {{errorMessage}}
+        {{ errorMessage }}
       </div>
     </ng-container>
     <ng-template #loading>
-      Loading...
+      <div class="text-info">
+        Loading...
+      </div>
     </ng-template>
   </ng-template>
-  
 </div>
