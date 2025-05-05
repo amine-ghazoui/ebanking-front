@@ -1,5 +1,10 @@
 <div class="container py-5">
-    <div class="card shadow-lg border-0 rounded-4" *ngIf="customers">
+  <ng-container *ngIf="customers |async as listCustomers; else failure">
+
+    <div *ngIf="errorMessage" class="text-danger">
+      <!-- pour afficher "un objet" ou format Json dans la parti HTML on utilise pipe | avec json -->
+    </div>
+    <div class="card shadow-lg border-0 rounded-4">
       
       <!-- En-tête bleu très clair -->
       <div class="card-header" style="background-color: #e9f5ff;">
@@ -18,7 +23,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let customer of customers">
+              <tr *ngFor="let customer of customers | async">
                 <td>{{ customer.id }}</td>
                 <td>{{ customer.name }}</td>
                 <td>{{ customer.email }}</td>
@@ -27,7 +32,25 @@
           </table>
         </div>
       </div>
-      
     </div>
-  </div>
+
+  </ng-container>
+
+  <ng-template #failure >
+    <div class="text-danger">
+      {{errorMessage}}
+    </div>
+  </ng-template>
+
+  <ng-template #failureOrLoading>
+    <ng-container *ngIf="errorMessage; else loading">
+      <div class="text-danger">
+        {{errorMessage}}
+      </div>
+    </ng-container>
+    <ng-template #loading>
+      Loading...
+    </ng-template>
+  </ng-template>
   
+</div>
