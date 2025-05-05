@@ -1,14 +1,17 @@
-
 <div class="container mt-5">
-  <form class="border p-4 rounded shadow-sm w-100 mx-auto" style="max-width: 500px;" [formGroup]="newCustomerFormGroup" (ngSubmit)="handleSaveCustomer()">
-    <h4 class="mb-4 text-center">Ajouter un Client</h4>
-    
-    <input type="text" class="form-control mb-3" placeholder="Nom" required>
-    <input type="email" class="form-control mb-3" placeholder="Email" required>
-    
-    <button type="submit" class="btn btn-primary w-100">
+    <form class="border p-4 rounded shadow-sm w-100 mx-auto" style="max-width: 500px;" [formGroup]="newCustomerFormGroup" (ngSubmit)="handleSaveCustomer()">
+      <h4 class="mb-4 text-center">Ajouter un Client</h4>
+      
+      <!-- Champ pour le nom -->
+      <input type="text" class="form-control mb-3" placeholder="Nom" formControlName="name" required>
+      
+      <!-- Champ pour l'email -->
+      <input type="email" class="form-control mb-3" placeholder="Email" formControlName="email" required>
+      
+      <!-- Bouton de soumission -->
+      <button type="submit" class="btn btn-primary w-100">
         <i class="bi bi-person-plus me-2"></i>
-        Ajouter
-    </button>
-  </form>
-</div>
+          Ajouter
+      </button>
+    </form>
+  </div>

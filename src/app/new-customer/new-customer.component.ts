@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { CustomerService } from '../services/customer.service';
+import { Customer } from '../model/custome.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-new-customer',
@@ -11,7 +14,7 @@ export class NewCustomerComponent implements OnInit {
 
   newCustomerFormGroup! : FormGroup;
 
-  constructor(private fb : FormBuilder){}
+  constructor(private fb : FormBuilder, private customerService : CustomerService){}
 
   ngOnInit(): void {
     this.newCustomerFormGroup = this.fb.group({
@@ -21,7 +24,35 @@ export class NewCustomerComponent implements OnInit {
   }
 
   handleSaveCustomer(){
-    
+    if (this.newCustomerFormGroup.invalid) {
+      Swal.fire({
+        icon: "warning",
+        title: "Formulaire invalide",
+        text: "Veuillez remplir tous les champs avant de soumettre.",
+      });
+      return;
+    }
+    // Récupère tout les données du formulaire et les stocks dans un objet de type Cudtomer
+    let customer:Customer = this.newCustomerFormGroup.value;
+    this.customerService.saveCustomer(customer).subscribe({
+      next : data =>{
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Client ajouté avec succès",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      },
+      error : err =>{
+        Swal.fire({
+          icon: "error",
+          title: "Erreur",
+          text: "Impossible d'ajouter le client !",
+          footer: '<a href="#">Voir les détails</a>'
+        });
+      }
+    })
   }
 
 }
