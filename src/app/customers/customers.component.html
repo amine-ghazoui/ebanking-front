@@ -1,9 +1,6 @@
 <div class="container py-5">
   <!-- Gestion des données avec le pipe async -->
   <ng-container *ngIf="customers | async as listCustomers; else failureOrLoading">
-    <div *ngIf="errorMessage" class="text-danger">
-      {{ errorMessage }}
-    </div>
 
     <div class="card shadow-lg border-0 rounded-4">
       <!-- En-tête bleu très clair -->
@@ -15,7 +12,7 @@
       <div class="card-body">
         <div class="table-responsive">
           <div *ngIf="searchFormGroup">
-            {{this.searchFormGroup.value | json}}
+            <!-- {{this.searchFormGroup.value | json}} -->
             <form [formGroup]="searchFormGroup" (ngSubmit)="handleSearchCustomers()">
               <div class="input-group mb-3">
                 <label for="kw" class="input-group-text">Keyword :</label>
@@ -33,6 +30,7 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>E-mail</th>
+                <th class="text-end">Actions</th> <!-- nouvelle colonne -->
               </tr>
             </thead>
             <tbody>
@@ -40,6 +38,15 @@
                 <td>{{ customer.id }}</td>
                 <td>{{ customer.name }}</td>
                 <td>{{ customer.email }}</td>
+                <td class="text-end">
+                  <!-- Boutons stylés Bootstrap -->
+                  <button class="btn btn-warning btn-sm me-2" (click)="onEditCustomer(customer)">
+                    <i class="bi bi-pencil"></i> 
+                  </button>
+                  <button class="btn btn-danger btn-sm" (click)="onDeleteCustomer(customer)">
+                    <i class="bi bi-trash"></i> 
+                  </button>
+                </td>
               </tr>
             </tbody>
           </table>

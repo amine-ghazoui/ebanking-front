@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomerService } from '../services/customer.service';
 import { Customer } from '../model/custome.model';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-customer',
@@ -12,14 +13,15 @@ import Swal from 'sweetalert2';
 })
 export class NewCustomerComponent implements OnInit {
 
+  // Déclare un formulaire réactif pour gérer les champs du formulaire de création d'un nouveau client
   newCustomerFormGroup! : FormGroup;
 
-  constructor(private fb : FormBuilder, private customerService : CustomerService){}
+  constructor(private fb : FormBuilder, private customerService : CustomerService, private router : Router){}
 
   ngOnInit(): void {
     this.newCustomerFormGroup = this.fb.group({
-      name : this.fb.control(null),
-      email : this.fb.control(null)
+      name : this.fb.control(null, [Validators.required, Validators.minLength(4)]),
+      email : this.fb.control(null, [Validators.email])
     })
   }
 
@@ -32,7 +34,7 @@ export class NewCustomerComponent implements OnInit {
       });
       return;
     }
-    // Récupère tout les données du formulaire et les stocks dans un objet de type Cudtomer
+    // Récupère tout les données du formulaire et les stocks dans un objet de type Customer
     let customer:Customer = this.newCustomerFormGroup.value;
     this.customerService.saveCustomer(customer).subscribe({
       next : data =>{
@@ -43,6 +45,8 @@ export class NewCustomerComponent implements OnInit {
           showConfirmButton: false,
           timer: 1500
         });
+        //this.newCustomerFormGroup.reset();
+        this.router.navigateByUrl("/customers")
       },
       error : err =>{
         Swal.fire({

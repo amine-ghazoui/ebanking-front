@@ -47,5 +47,17 @@ export class CustomersComponent implements OnInit{
     );
   }
 
+  onEditCustomer(customer : Customer){
+
+  }
+
+  onDeleteCustomer(customer : Customer){
+    this.customerService.deleteCustomer(customer.id).subscribe({
+      next: (data) =>{
+        this.handleSearchCustomers();
+      }
+    });
+  }
+
 
 }

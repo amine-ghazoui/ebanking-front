@@ -4,12 +4,17 @@
       
       <!-- Champ pour le nom -->
       <input type="text" class="form-control mb-3" placeholder="Nom" formControlName="name" required>
-      
+      <span class="text-danger" *ngIf="newCustomerFormGroup.controls['name']?.touched &&newCustomerFormGroup.controls['name']?.errors&& newCustomerFormGroup.controls['name']?.errors?.['required']">
+        Name is required
+      </span>     
       <!-- Champ pour l'email -->
       <input type="email" class="form-control mb-3" placeholder="Email" formControlName="email" required>
+      <span class="text-danger" *ngIf="newCustomerFormGroup.controls['email']?.touched &&newCustomerFormGroup.controls['email']?.errors&& newCustomerFormGroup.controls['email']?.errors?.['email']">
+        Email is not valid
+      </span>
       
       <!-- Bouton de soumission -->
-      <button type="submit" class="btn btn-primary w-100">
+      <button [disabled]="!newCustomerFormGroup.valid" type="submit" class="btn btn-primary w-100">
         <i class="bi bi-person-plus me-2"></i>
           Ajouter
       </button>

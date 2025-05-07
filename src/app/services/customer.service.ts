@@ -24,6 +24,11 @@ export class CustomerService {
     return this.http.post<Customer>(environment.backendHost+"/customers", customer);
   }
 
+  deleteCustomer(idCustomer : number){
+    return this.http.delete(environment.backendHost+"/customers/"+idCustomer);
+  }
+
+
 }
 
 // les méthodes get, post, put retourne un objet de type Observable
