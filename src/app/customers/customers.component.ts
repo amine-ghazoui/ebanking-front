@@ -48,7 +48,7 @@ export class CustomersComponent implements OnInit{
   }
 
   onEditCustomer(customer : Customer){
-
+    
   }
 
   onDeleteCustomer(customer : Customer){
@@ -58,6 +58,5 @@ export class CustomersComponent implements OnInit{
       }
     });
   }
-
 
 }

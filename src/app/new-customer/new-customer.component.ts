@@ -60,3 +60,15 @@ export class NewCustomerComponent implements OnInit {
   }
 
 }
+
+
+/*
+
+this.fb.group({...}) : crée un groupe de champs de formulaire.
+
+Chaque champ comme title, description, etc., est créé avec this.fb.control(null), c'est-à-dire :
+
+Un champ vide au départ (null)
+
+Tu peux ensuite lier ces champs au HTML avec formControlName="title", etc.
+*/
