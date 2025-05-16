@@ -61,7 +61,11 @@ export class CustomersComponent implements OnInit{
   }
 
   handleCustomerAccounts(customer : Customer){
-    this.router.navigateByUrl("/customer-accounts/"+customer.id)
+    this.router.navigateByUrl("/customer-accounts/"+customer.id, {state : customer})
   }
 
 }
+
+/*
+{state : customer} : pour transmetre l'objet customer dans l'URL aussi !
+*/
