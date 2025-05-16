@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AccountsService } from '../services/accounts.service';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { AccountDetails } from '../model/account.model';
 import Swal from 'sweetalert2';
 
@@ -18,6 +18,7 @@ export class AccountsComponent implements OnInit{
   pageSize : number = 5;
   accountObservable! : Observable<AccountDetails>;
   operationFormGroup! : FormGroup;
+  errorMessage! : string;
 
 
   constructor(private fb : FormBuilder, private accountService : AccountsService){}
@@ -38,7 +39,12 @@ export class AccountsComponent implements OnInit{
   handleSearchAccount(){
     let accountId : string = this.accountFormGroup.value.accountId;
     // au lieux d'utilisé .subscibe....
-    this.accountObservable =  this.accountService.getAccount(accountId, this.currentPage, this.pageSize);
+    this.accountObservable =  this.accountService.getAccount(accountId, this.currentPage, this.pageSize).pipe(
+      catchError(err => {
+        this.errorMessage = err.message;
+        return throwError(err);
+      })
+    );
   }
 
   goToPage(page : number){
@@ -51,9 +57,9 @@ export class AccountsComponent implements OnInit{
     let operationType = this.operationFormGroup.value.operationType;
     let amount : number = this.operationFormGroup.value.amount;
     let description : string = this.operationFormGroup.value.description;
-    let accountDestination : number = this.operationFormGroup.value.accountDestination;
+    let accountDestination : string = this.operationFormGroup.value.accountDestination;
 
-    if(operationType=='DEBIT'){
+    if(operationType == 'DEBIT'){
       this.accountService.debit(accountId, amount, description).subscribe({
         next : data =>{
             Swal.fire({
@@ -61,6 +67,8 @@ export class AccountsComponent implements OnInit{
               icon: "success",
               draggable: true
             });
+            this.operationFormGroup.reset();
+            this.handleSearchAccount();
         }, error : err =>{
           console.log(err)
         }
@@ -71,10 +79,12 @@ export class AccountsComponent implements OnInit{
         this.accountService.credit(accountId, amount, description).subscribe({
         next : data =>{
             Swal.fire({
-              title: "Success Debit ",
+              title: "Success Credit ",
               icon: "success",
               draggable: true
             });
+            this.operationFormGroup.reset();
+            this.handleSearchAccount();
         }, error : err =>{
           console.log(err)
         }
@@ -82,13 +92,15 @@ export class AccountsComponent implements OnInit{
 
     } else if(operationType == 'TRANSFER'){
 
-        this.accountService.credit(accountId,  amount, description).subscribe({
+        this.accountService.transfer(accountId, accountDestination,  amount, description).subscribe({
         next : data =>{
             Swal.fire({
-              title: "Success Debit ",
+              title: "Success transfer ",
               icon: "success",
               draggable: true
             });
+            this.operationFormGroup.reset();
+            this.handleSearchAccount();
         }, error : err =>{
           console.log(err)
         }
