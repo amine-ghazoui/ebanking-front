@@ -10,9 +10,9 @@ import { AdminTemplateComponent } from './admin-template/admin-template.componen
 const routes: Routes = [
   {path : "login", component : LoginComponent},
   {path : "", redirectTo : "/login", pathMatch : "full"},
-  {path : "customers", component : CustomersComponent},
   {path : "admin", component : AdminTemplateComponent, children : [
-     {path : "accounts", component : AccountsComponent}, 
+    {path : "customers", component : CustomersComponent},
+    {path : "accounts", component : AccountsComponent}, 
     {path : "new-customer", component : NewCustomerComponent}, 
     {path : "customer-accounts/:id", component : CustomerAccountComponent}
   ]}

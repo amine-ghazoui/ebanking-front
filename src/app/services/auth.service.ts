@@ -10,9 +10,9 @@ export class AuthService {
   isAuthenticated : boolean = false;
   roles : any;
   username : any;
-  accesToken! : string;
+  accessToken! : string;
 
-  constructor(private http : HttpClient) { }
+  constructor(private http : HttpClient) {}
 
   login(username : string, password : string){
 
@@ -26,10 +26,10 @@ export class AuthService {
 
   loadProfile(data : any){
     this.isAuthenticated = true;
-    this.accesToken = data['access-token'];
-    let decodedJwt:any = jwtDecode(this.accesToken)
+    this.accessToken = data['access-token'];
+    let decodedJwt:any = jwtDecode(this.accessToken)
     console.log(decodedJwt);
     this.username = decodedJwt.sub;
-    this.roles = decodedJwt.scpoe;
+    this.roles = decodedJwt.scope;
   }
 }
