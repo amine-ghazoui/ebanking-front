@@ -4,6 +4,7 @@ import { AccountsService } from '../services/accounts.service';
 import { catchError, Observable, throwError } from 'rxjs';
 import { AccountDetails } from '../model/account.model';
 import Swal from 'sweetalert2';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-accounts',
@@ -21,7 +22,7 @@ export class AccountsComponent implements OnInit{
   errorMessage! : string;
 
 
-  constructor(private fb : FormBuilder, private accountService : AccountsService){}
+  constructor(private fb : FormBuilder, private accountService : AccountsService, public authService : AuthService){}
 
   ngOnInit(): void {
     this.accountFormGroup = this.fb.group({
